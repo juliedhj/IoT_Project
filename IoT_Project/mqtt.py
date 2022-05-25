@@ -1,4 +1,5 @@
 import paho.mqtt.client as mqtt
+import influx
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
@@ -6,13 +7,23 @@ def on_connect(client, userdata, flags, rc):
 
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
-    client.subscribe("temperature/heleneogjulie")
-    client.subscribe("humidity/heleneogjulie")
-    client.subscribe("wifi/heleneogjulie")
+    topicNames = ["temperature", "humidity", "wifi" ]
+    topics = [(f"hjsensor/+/+/{top}", 0) for top in topicNames]
+    print(topics)
+    client.subscribe(topics)
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
-    print(msg.topic+" "+str(msg.payload))
+    print(msg.topic+" "+str(msg.payload.decode("utf-8")))
+
+    topic_split = msg.topic.split("/")
+    field = topic_split[-1]
+    gps = topic_split[2]
+    id = topic_split[1]
+    value = msg.payload.decode("utf-8")
+
+    influx.InfluxClient(id, gps, field, float(value))
+    
 
 client = mqtt.Client("client123")
 client.on_connect = on_connect
