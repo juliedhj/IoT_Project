@@ -1,17 +1,16 @@
 #IP CoAP server: coap://130.136.2.70, port: 5683
-
 import logging
 import asyncio
-from pickle import GET
 
-from aiocoap import *
+import aiocoap 
 
+server = 'coap://130.136.2.70:5683/test'
 logging.basicConfig(level=logging.INFO)
 
 async def main():
-    protocol = await Context.create_client_context()
+    protocol = await aiocoap.Context.create_client_context()
 
-    request = Message(code=GET, uri='coap://130.136.2.70;5683')
+    request = aiocoap.Message(code=aiocoap.GET, uri=server)
 
     try:
         response = await protocol.request(request).response
