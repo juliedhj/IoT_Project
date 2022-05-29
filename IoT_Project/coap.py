@@ -7,18 +7,20 @@ import aiocoap
 server = 'coap://130.136.2.70:5683/test'
 logging.basicConfig(level=logging.INFO)
 
-async def main():
-    protocol = await aiocoap.Context.create_client_context()
+true = True
+while (True):
+    async def main():
+        protocol = await aiocoap.Context.create_client_context()
 
-    request = aiocoap.Message(code=aiocoap.GET, uri=server)
+        request = aiocoap.Message(code=aiocoap.GET, uri=server)
 
-    try:
-        response = await protocol.request(request).response
-    except Exception as e:
-        print('Failed to fetch resource:')
-        print(e)
-    else:
-        print('Result: %s\n%r'%(response.code, response.payload))
+        try:
+            response = await protocol.request(request).response
+        except Exception as e:
+            print('Failed to fetch resource:')
+            print(e)
+        else:
+            print('Result GET: %s\n%r'%(response.code, response.payload))
 
-if __name__ == "__main__":
-    asyncio.run(main())
+    if __name__ == "__main__":
+        asyncio.run(main())
