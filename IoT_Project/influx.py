@@ -7,6 +7,7 @@ from influxdb_client.client.write_api import SYNCHRONOUS
 #org = iotunibo
 #buket = measures
 
+
 def InfluxClient(id, gps, field, value): 
     token = "JAIXEbfN95UtK9j0JgWY25q4pRxzXIuF0VcObkFawsWmJ_01C6OlCwHhz3LfTK5Lq42DRbPB_qVIAFe2VaqhTQ=="
     org = "iotunibo"

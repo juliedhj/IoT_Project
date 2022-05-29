@@ -1,2 +1,3 @@
 #user: admin
 #passw: iot2022
+#api-key eyJrIjoiZjZUNEVkVnVxTENFNndjTnV1THEyZ0JXUmFXY2dQcFoiLCJuIjoiaW90IiwiaWQiOjF9
