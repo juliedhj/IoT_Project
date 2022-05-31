@@ -1,17 +1,23 @@
 from influxdb_client import InfluxDBClient, Point
 from influxdb_client.client.write_api import SYNCHRONOUS
-
+import os
+from dotenv import load_dotenv
 
 #user = juliedhj
 #pwd = iotproject
 #org = iotunibo
-#buket = measures
+
+load_dotenv()
+
+token = os.getenv('INFLUX_TOKEN')
+bucket = os.getenv('INFLUX_BUCKET')
+org = os.getenv('INFLUX_ORG')
 
 
 def InfluxClient(id, gps, field, value): 
-    token = "JAIXEbfN95UtK9j0JgWY25q4pRxzXIuF0VcObkFawsWmJ_01C6OlCwHhz3LfTK5Lq42DRbPB_qVIAFe2VaqhTQ=="
-    org = "iotunibo"
-    bucket = "sensordata"
+    token = token
+    org = org
+    bucket = bucket
 
 
     client = InfluxDBClient(url="http://localhost:8086/", token=token, org=org)
