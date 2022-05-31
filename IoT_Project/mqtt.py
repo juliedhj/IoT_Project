@@ -14,15 +14,15 @@ def on_connect(client, userdata, flags, rc):
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
-    print(msg.topic+" "+str(msg.payload.decode("utf-8")))
-
     topic_split = msg.topic.split("/")
     field = topic_split[-1]
     gps = topic_split[2]
     id = topic_split[1]
     value = msg.payload.decode("utf-8")
 
+
     influx.InfluxClient(id, gps, field, float(value))
+    print("MQTT to InfluxDB")
     
 
 client = mqtt.Client("client123")
