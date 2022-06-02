@@ -7,7 +7,7 @@ def on_connect(client, userdata, flags, rc):
 
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
-    topicNames = ["temperature", "humidity", "wifi" ]
+    topicNames = ["temperature", "humidity", "gas", "aqi", "wifi" ]
     topics = [(f"hjsensor/+/+/{top}", 0) for top in topicNames]
     print(topics)
     client.subscribe(topics)

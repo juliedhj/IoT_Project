@@ -10,7 +10,7 @@ def read_data():
     print(data)
     gps = "(44.494716644287111,11.349454879760743)"
     id = "ESP32-EC79D2A3C9C8"
-    sensor_types = ["temperature", "humidity", "wifi"]
+    sensor_types = ["temperature", "humidity", "gas", "aqi", "wifi"]
     for key, value in data.items():
         if key not in sensor_types:
             return jsonify({"Error": "This sensor type is not valid: " + key})
