@@ -13,9 +13,11 @@ token = os.getenv('INFLUX_TOKEN')
 bucket = os.getenv('INFLUX_BUCKET')
 org = os.getenv('INFLUX_ORG')
 
+def getClient():
+    return InfluxDBClient(url="http://localhost:8086/", token=token, org=org)
 
 def InfluxClient(id, gps, field, value): 
-    client = InfluxDBClient(url="http://localhost:8086/", token=token, org=org)
+    client = getClient()
 
     write_api = client.write_api(write_options=SYNCHRONOUS)
     query_api = client.query_api()
