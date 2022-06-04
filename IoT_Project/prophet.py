@@ -71,6 +71,8 @@ def query_data_process_forecast(measurement, bucket):
    return df
    
 
+
+
 def prophet_forecast(dataframe):
    m = Prophet()
    m.fit(dataframe)
@@ -97,7 +99,7 @@ def process_forecast(forecast, measurement):
 def publish_forecast(lines):
    write_api.write(forecast_bucket, org, lines)
 
-def forcasting_data(measurement):
+def forecast_data(measurement):
    dataframe = query_data_process(measurement, bucket)
    forecast = prophet_forecast(dataframe)
    lines = process_forecast(forecast, measurement)
@@ -128,7 +130,12 @@ def compute_all_mse():
         mse = timeseries_mse(measure)
         print(f"{measure} : {mse}")
 
-forcasting_data("temperature")
-forcasting_data("humidity")
-forcasting_data("gas")
+
+def forecast_all():
+   measurements = ["temperature", "humidity", "gas"]
+   for measure in measurements: 
+        forecast_data(measure)
+        print(f"Made forecast for {measure}")
+
+forecast_all()
 #compute_all_mse()

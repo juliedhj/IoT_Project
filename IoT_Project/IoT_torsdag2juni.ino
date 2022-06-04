@@ -11,6 +11,7 @@ PubSubClient clientMQTT;
 HTTPClient clientHTTP; 
 using namespace std;
 
+//Variables
 char packetBuffer[255];
 char  ReplyBuffer[] = "ACK";
 int SAMPLE_FREQUENCY = 5000;
@@ -23,16 +24,18 @@ float AQI;
 char j;
 int useMQTT = 0;
 boolean resultMQTT;
-
 float latitude = 44.494716552360245;
 float longitude = 11.349454942271755;
 
+//Network related variables
 char* SSID = "FASTWEB-7847FA";
 char* PASS = "9H7GPMPFZ2";
 const IPAddress ipadd(192,168,0,132);
 char id[23];
 const char* MQTT_USER = "iot2020";
 const char* MQTT_PASSWD = "mqtt2020*";
+const char* IP_MQTT_SERVER ="130.136.2.70";
+const char* serverName = "http://192.168.1.151:105/sensordata";
 
 //Topics for sending
 const char* TOPIC_0="temperature";
@@ -48,8 +51,6 @@ const char* TOPIC_6 = "hjsensor/incoming/samplefreq";
 const char* TOPIC_7 = "hjsensor/incoming/min_gas";
 const char* TOPIC_8 = "hjsensor/incoming/max_gas";
 
-const char* IP_MQTT_SERVER ="130.136.2.70";
-const char* serverName = "http://192.168.1.151:105/sensordata";
 
 void callback_MQTT(char* topic, byte* payload, unsigned int length){
   String payloadMessage;
@@ -61,7 +62,6 @@ void callback_MQTT(char* topic, byte* payload, unsigned int length){
     Serial.print((char)payload[i]);
     payloadMessage += (char)payload[i];
   }
-
    if (strcmp(topic, TOPIC_5) == 0){
     String protocol = payloadMessage;
     if (protocol.compareTo("http") == 0) {
@@ -73,7 +73,6 @@ void callback_MQTT(char* topic, byte* payload, unsigned int length){
       Serial.println("[LOG] MQTT protocol in use");
     }
   }
-  
   if (strcmp(topic, TOPIC_6)==0){
       SAMPLE_FREQUENCY = payloadMessage.toInt();
       Serial.println("Changed sample frequency to: "); 
@@ -106,7 +105,9 @@ void post_HTTP(float temperature, float humidity, float gas, float aqi, int wifi
     httpPayload += "\"humidity\":" + String(humidity) + ",";
     httpPayload += "\"gas\":" + String(gas) + ",";
     httpPayload += "\"aqi\":" + String(aqi) + ",";
-    httpPayload += "\"wifi\":" + String(wifi);
+    httpPayload += "\"wifi\":" + String(wifi) + ",";
+    httpPayload += "\"id\":" + String(id) + ",";
+    httpPayload += "\"gps\":" + String(gps);
     httpPayload += "}";
     httpPayload = String(httpPayload);
 
@@ -225,6 +226,8 @@ void loop(){
   float gas = ((gas_analog_value/1023)*100);
   int wifiSignal = WiFi.RSSI();
   String gps = "(" + String(latitude, 15) +","+ String(longitude, 15) +")";
+  String gps_json = "'(" + String(latitude, 15) +","+ String(longitude, 15) +")'";
+  String chip_id = "'" + String(id) + "'";
 
   AQI = computeAQI(gas);
  
@@ -253,7 +256,7 @@ void loop(){
     else 
       Serial.println("[ERROR] MQTT connection failed");
   } else {
-    post_HTTP(temperature, humidity, gas, AQI, wifiSignal, id, gps); 
+    post_HTTP(temperature, humidity, gas, AQI, wifiSignal, chip_id, gps); 
   }
    delay(SAMPLE_FREQUENCY);
 }
