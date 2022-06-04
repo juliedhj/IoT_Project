@@ -25,20 +25,3 @@ def InfluxClient(id, gps, field, value):
     p = Point("measures").tag("ID", id).tag("GPS", gps).field(field, value)
 
     write_api.write(bucket=bucket, record=p)
-
-#InfluxClient("ESP-ID", "123,456", "humidity", 40)
-## using Table structure
-#tables = query_api.query('from(bucket:"sensordata") |> range(start: -10m)')
-
-#for table in tables:
-#    print(table)
-#    for row in table.records:
-#        print (row.values)
-
-
-## using csv library
-#csv_result = query_api.query_csv('from(bucket:"sensordata") |> range(start: -10m)')
-#val_count = 0
-#for row in csv_result:
-#    for cell in row:
-#        val_count += 1

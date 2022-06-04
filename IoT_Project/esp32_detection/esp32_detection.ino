@@ -21,7 +21,6 @@ list<float> gasValues(true);
 int Gas_analog = 35;  
 long gasAverage;
 float AQI;
-char j;
 int useMQTT = 0;
 boolean resultMQTT;
 float latitude = 44.494716552360245;
@@ -92,10 +91,10 @@ void callback_MQTT(char* topic, byte* payload, unsigned int length){
   Serial.println();
 }
 
-void post_HTTP(float temperature, float humidity, float gas, float aqi, int wifi, char* id, String gps){
+void post_HTTP(float temperature, float humidity, float gas, float aqi, int wifi, String id, String gps){
   
     String path; 
-    path += String(serverName) +"/"+ String(id) + "/" + gps;
+    path += String(serverName);
     
     clientHTTP.begin(path.c_str());
     clientHTTP.addHeader("Content-type", "application/json");
@@ -110,6 +109,7 @@ void post_HTTP(float temperature, float humidity, float gas, float aqi, int wifi
     httpPayload += "\"gps\":" + String(gps);
     httpPayload += "}";
     httpPayload = String(httpPayload);
+    Serial.print(httpPayload);
 
     String parsedPayload = httpPayload.c_str();
     int responsecode = clientHTTP.POST(parsedPayload); 
@@ -226,8 +226,9 @@ void loop(){
   float gas = ((gas_analog_value/1023)*100);
   int wifiSignal = WiFi.RSSI();
   String gps = "(" + String(latitude, 15) +","+ String(longitude, 15) +")";
-  String gps_json = "'(" + String(latitude, 15) +","+ String(longitude, 15) +")'";
-  String chip_id = "'" + String(id) + "'";
+  String gps_json = "(" + String(latitude, 15) +","+ String(longitude, 15) +")";
+  String gps_http = '"' + gps_json + '"';
+  String chip_id = '"' + String(id) + '"';
 
   AQI = computeAQI(gas);
  
@@ -256,7 +257,7 @@ void loop(){
     else 
       Serial.println("[ERROR] MQTT connection failed");
   } else {
-    post_HTTP(temperature, humidity, gas, AQI, wifiSignal, chip_id, gps); 
+    post_HTTP(temperature, humidity, gas, AQI, wifiSignal, chip_id, gps_http); 
   }
    delay(SAMPLE_FREQUENCY);
 }
