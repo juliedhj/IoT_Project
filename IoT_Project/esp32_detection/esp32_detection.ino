@@ -25,6 +25,9 @@ int useMQTT = 0;
 boolean resultMQTT;
 float latitude = 44.494716552360245;
 float longitude = 11.349454942271755;
+int mqttPackets;
+int httpPacketsSent;
+int httpPacketsReceived;
 
 //Network related variables
 char* SSID = "FASTWEB-7847FA";
@@ -109,16 +112,22 @@ void post_HTTP(float temperature, float humidity, float gas, float aqi, int wifi
     httpPayload += "\"gps\":" + String(gps);
     httpPayload += "}";
     httpPayload = String(httpPayload);
-    Serial.print(httpPayload);
 
     String parsedPayload = httpPayload.c_str();
+    Serial.println("Sending HTTP packets");
     int responsecode = clientHTTP.POST(parsedPayload); 
+    httpPacketsSent++;
+    Serial.print("[LOG]: HTTP packets sent: ");
+    Serial.println(httpPacketsSent);
+
 
     if (responsecode != 200) {
       Serial.print("[HTTP] Error: ");
       Serial.println(responsecode);
     } else {
-      Serial.println("[LOG] Published sensor readings with HTTP");
+      httpPacketsReceived++;
+      Serial.print("[LOG] Packets received with HTTP: ");
+      Serial.println(httpPacketsReceived);
     }
     clientHTTP.end();
   }
@@ -245,6 +254,7 @@ void loop(){
   Serial.println(SAMPLE_FREQUENCY);
 
   if (useMQTT) {
+    Serial.println("Sending data to the MQTT");
     resultMQTT=publishData(0, temperature, id, gps);
     resultMQTT=publishData(1, humidity, id, gps);
     resultMQTT=publishData(2, gas, id, gps);
@@ -252,8 +262,11 @@ void loop(){
     resultMQTT=publishData(4, AQI, id, gps);
     
 
-    if (resultMQTT)
+    if (resultMQTT) {
       Serial.println("[LOG] Data published to MQTT server");
+      mqttPackets++;
+      Serial.print("[LOG] Packets sent with MQTT to each channel: ");
+      Serial.println(mqttPackets);}
     else 
       Serial.println("[ERROR] MQTT connection failed");
   } else {

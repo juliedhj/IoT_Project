@@ -1,0 +1,99 @@
+10:22:45.085 -> [LOG] Temperature: 27.40
+10:22:45.120 -> [LOG] Humidity: 61.00
+10:22:45.120 -> [LOG] Gas Sensor: 40.86
+10:22:45.153 -> [LOG] AQI measurement: 1.00
+10:22:45.187 -> [LOG] RSSI: -61 dBm
+10:22:45.223 -> [LOG] Sample Frequency: 5000
+10:22:45.223 -> Sending HTTP packets
+10:22:45.430 -> [LOG]: HTTP packets sent:1
+10:22:45.464 -> [LOG] Packets received with HTTP: 1
+10:22:50.476 -> [LOG] Gas average: 26
+10:22:50.476 -> [LOG] Temperature: 27.40
+10:22:50.509 -> [LOG] Humidity: 61.00
+10:22:50.547 -> [LOG] Gas Sensor: 38.22
+10:22:50.582 -> [LOG] AQI measurement: 1.00
+10:22:50.582 -> [LOG] RSSI: -62 dBm
+10:22:50.615 -> [LOG] Sample Frequency: 5000
+10:22:50.649 -> Sending HTTP packets
+10:22:50.759 -> [LOG]: HTTP packets sent:2
+10:22:50.792 -> [LOG] Packets received with HTTP: 2
+10:22:55.797 -> [LOG] Gas average: 29
+10:22:55.830 -> [LOG] Temperature: 27.40
+10:22:55.830 -> [LOG] Humidity: 61.00
+10:22:55.865 -> [LOG] Gas Sensor: 39.20
+10:22:55.900 -> [LOG] AQI measurement: 1.00
+10:22:55.930 -> [LOG] RSSI: -63 dBm
+10:22:55.930 -> [LOG] Sample Frequency: 5000
+10:22:55.963 -> Sending HTTP packets
+10:22:59.113 -> [LOG]: HTTP packets sent:3
+10:22:59.146 -> [LOG] Packets received with HTTP: 3
+10:23:04.129 -> [LOG] Gas average: 31
+10:23:04.167 -> [LOG] Temperature: 27.40
+10:23:04.201 -> [LOG] Humidity: 61.00
+10:23:04.201 -> [LOG] Gas Sensor: 37.54
+10:23:04.233 -> [LOG] AQI measurement: 1.00
+10:23:04.269 -> [LOG] RSSI: -56 dBm
+10:23:04.302 -> [LOG] Sample Frequency: 5000
+10:23:04.336 -> Sending HTTP packets
+10:23:04.436 -> [LOG]: HTTP packets sent:4
+10:23:04.470 -> [LOG] Packets received with HTTP: 4
+10:23:09.452 -> [LOG] Gas average: 39
+10:23:09.485 -> [LOG] Temperature: 27.40
+10:23:09.518 -> [LOG] Humidity: 61.00
+10:23:09.552 -> [LOG] Gas Sensor: 42.23
+10:23:09.552 -> [LOG] AQI measurement: 1.00
+10:23:09.587 -> [LOG] RSSI: -62 dBm
+10:23:09.620 -> [LOG] Sample Frequency: 5000
+10:23:09.654 -> Sending HTTP packets
+10:23:09.692 -> [LOG]: HTTP packets sent:5
+10:23:09.725 -> [LOG] Packets received with HTTP: 5
+10:23:14.715 -> [LOG] Gas average: 38
+10:23:14.748 -> [LOG] Temperature: 27.40
+10:23:14.784 -> [LOG] Humidity: 61.00
+10:23:14.818 -> [LOG] Gas Sensor: 35.87
+10:23:14.818 -> [LOG] AQI measurement: 1.00
+10:23:14.851 -> [LOG] RSSI: -54 dBm
+10:23:14.886 -> [LOG] Sample Frequency: 5000
+10:23:14.921 -> Sending HTTP packets
+10:23:14.921 -> [LOG]: HTTP packets sent:6
+10:23:14.959 -> [LOG] Packets received with HTTP: 6
+10:23:19.965 -> [LOG] Gas average: 38
+10:23:19.999 -> [LOG] Temperature: 27.40
+10:23:19.999 -> [LOG] Humidity: 61.00
+10:23:20.035 -> [LOG] Gas Sensor: 37.05
+10:23:20.072 -> [LOG] AQI measurement: 1.00
+10:23:20.105 -> [LOG] RSSI: -61 dBm
+10:23:20.105 -> [LOG] Sample Frequency: 5000
+10:23:20.143 -> Sending HTTP packets
+10:23:23.004 -> [LOG]: HTTP packets sent:7
+10:23:23.041 -> [LOG] Packets received with HTTP: 7
+10:23:28.044 -> [LOG] Gas average: 38
+10:23:28.081 -> [LOG] Temperature: 27.40
+10:23:28.081 -> [LOG] Humidity: 61.00
+10:23:28.114 -> [LOG] Gas Sensor: 39.10
+10:23:28.147 -> [LOG] AQI measurement: 1.00
+10:23:28.181 -> [LOG] RSSI: -62 dBm
+10:23:28.181 -> [LOG] Sample Frequency: 5000
+10:23:28.218 -> Sending HTTP packets
+10:23:33.923 -> [LOG]: HTTP packets sent:8
+10:23:33.956 -> [LOG] Packets received with HTTP: 8
+10:23:38.973 -> [LOG] Gas average: 38
+10:23:38.973 -> [LOG] Temperature: 27.40
+10:23:39.007 -> [LOG] Humidity: 61.00
+10:23:39.043 -> [LOG] Gas Sensor: 39.78
+10:23:39.043 -> [LOG] AQI measurement: 1.00
+10:23:39.077 -> [LOG] RSSI: -55 dBm
+10:23:39.113 -> [LOG] Sample Frequency: 5000
+10:23:39.150 -> Sending HTTP packets
+10:23:39.183 -> [LOG]: HTTP packets sent:9
+10:23:39.217 -> [LOG] Packets received with HTTP: 9
+10:23:44.245 -> [LOG] Gas average: 39
+10:23:44.245 -> [LOG] Temperature: 27.40
+10:23:44.281 -> [LOG] Humidity: 61.00
+10:23:44.316 -> [LOG] Gas Sensor: 43.89
+10:23:44.316 -> [LOG] AQI measurement: 1.00
+10:23:44.354 -> [LOG] RSSI: -55 dBm
+10:23:44.391 -> [LOG] Sample Frequency: 5000
+10:23:44.391 -> Sending HTTP packets
+10:23:44.525 -> [LOG]: HTTP packets sent:10
+10:23:44.559 -> [LOG] Packets received with HTTP: 10

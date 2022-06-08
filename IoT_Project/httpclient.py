@@ -1,13 +1,17 @@
 import json
 from flask import Flask, request, jsonify
 import influx
+import datetime
 
 app = Flask(__name__)
+packets = 0
 
 @app.route('/sensordata', methods=['POST'])
 def read_data():
     data = request.get_json()
+    ct = datetime.datetime.now()
     print(data)
+    print("Current time", ct)
     #gps = "(44.494716644287111,11.349454879760743)"
     #id = "ESP32-EC79D2A3C9C8"
     sensor_types = ["temperature", "humidity", "gas", "aqi", "wifi", "id", "gps"]

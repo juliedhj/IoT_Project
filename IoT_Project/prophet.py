@@ -4,6 +4,7 @@ import time
 from datetime import datetime
 from fbprophet import Prophet
 import numpy as np
+from sklearn.metrics import mean_squared_error
 
 from influxdb_client import InfluxDBClient, Point, WriteOptions
 from influxdb_client.client.write_api import SYNCHRONOUS
@@ -25,7 +26,7 @@ forecast_bucket = "sensor_forecast"
 
 def query_data_process(measurement, bucket):
    query = f'from(bucket:"{bucket}")' \
-        ' |> range(start:-1h, stop: 0h)'\
+        ' |> range(start:-24h, stop: 0h)'\
         ' |> filter(fn: (r) => r._measurement == "measures")' \
         f' |> filter(fn: (r) => r._field == "{measurement}")'\
         ' |> aggregateWindow (every: 1m, fn: mean, createEmpty: false)'
@@ -47,37 +48,11 @@ def query_data_process(measurement, bucket):
    df.head()
    return df
 
-def query_data_process_forecast(measurement, bucket):
-   query = f'from(bucket:"{bucket}")' \
-        ' |> range(start:-1h, stop: 0h)'\
-        ' |> filter(fn: (r) => r._measurement == "{measurement}")' \
-        ' |> aggregateWindow (every: 1m, fn: mean, createEmpty: false)'
-
-   result = client.query_api().query(org=org, query=query)
-
-   raw = []
-   for table in result:
-        for record in table.records:
-           raw.append((record.get_value(), record.get_time()))
-   
-   #Make the raw into a Pandas dataframe 
-   print("=== influxdb query into dataframe ===")
-   df = pd.DataFrame(raw, columns=['y','ds'], index=None)
-   df['ds'] = df['ds'].values.astype('<M8[s]')
-   df['ds'] +=  pd.to_timedelta(2, unit='h')
-   df['y'] = df['y'].apply(lambda x: round(x, 2))
-   df.set_index('ds')
-   df.head()
-   return df
-   
-
-
-
 def prophet_forecast(dataframe):
    m = Prophet()
    m.fit(dataframe)
 
-   future = m.make_future_dataframe(periods=48)
+   future = m.make_future_dataframe(periods=24, freq = "1min")
    forecast = m.predict(future)
    forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail()
 
@@ -100,36 +75,31 @@ def publish_forecast(lines):
    write_api.write(forecast_bucket, org, lines)
 
 def forecast_data(measurement):
-   dataframe = query_data_process(measurement, bucket)
-   forecast = prophet_forecast(dataframe)
+   df = query_data_process(measurement, bucket)
+   #dataframe = drop_duplicates(df)
+   forecast = prophet_forecast(df)
    lines = process_forecast(forecast, measurement)
    publish_forecast(lines)
+   mse = timeseries_mse(df, forecast)
+   print("MSE:")
+   print(f"{measurement} : {mse}")
 
-def compute_mse(y_true, y_pred):
-   return np.square(np.subtract(y_true, y_pred)).mean()
 
 def drop_duplicates(dataframe):
    dataframe.drop_duplicates(subset='ds', keep='last', inplace=True)
    dataframe.set_index('ds', inplace=True)
    return dataframe
 
-def timeseries_mse(measurement):
-   dataframe_sensor = query_data_process(measurement, bucket)
-   dataframe_forecast = query_data_process_forecast(measurement, forecast_bucket)
+def compute_mse(metric_df):
+    mse = mean_squared_error(metric_df.y, metric_df.yhat)
+    return mse
 
-   dataframe_sensor = drop_duplicates(dataframe_sensor)
-   dataframe_forecast = drop_duplicates(dataframe_forecast)
-
-   mse_ts = compute_mse(dataframe_sensor, dataframe_forecast)
-
-   return mse_ts 
-
-def compute_all_mse():
-   measurements = ["temperature", "humidity", "gas"]
-   for measure in measurements: 
-        mse = timeseries_mse(measure)
-        print(f"{measure} : {mse}")
-
+def timeseries_mse(df, forecast):
+    metric_df = forecast.set_index('ds')[['yhat']].join(df.set_index('ds').y).reset_index()
+    metric_df.tail()
+    metric_df.dropna(inplace=True)
+    mse = compute_mse(metric_df)
+    return mse
 
 def forecast_all():
    measurements = ["temperature", "humidity", "gas"]
@@ -138,4 +108,3 @@ def forecast_all():
         print(f"Made forecast for {measure}")
 
 forecast_all()
-#compute_all_mse()
