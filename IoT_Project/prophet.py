@@ -52,7 +52,7 @@ def prophet_forecast(dataframe):
    m = Prophet()
    m.fit(dataframe)
 
-   future = m.make_future_dataframe(periods=24, freq = "1min")
+   future = m.make_future_dataframe(periods=48, freq = "5S")
    forecast = m.predict(future)
    forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail()
 

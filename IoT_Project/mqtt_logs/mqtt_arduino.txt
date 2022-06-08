@@ -1,0 +1,103 @@
+09:30:21.668 -> Message received in callback, to topic hjsensor/incoming/changeProtocol
+09:30:21.772 -> [LOG] Message payload: mqtt[LOG] MQTT protocol in use
+09:30:21.805 -> 
+09:30:21.805 -> [LOG] Gas average: 42
+09:30:21.843 -> [LOG] Temperature: 26.70
+09:30:21.879 -> [LOG] Humidity: 63.00
+09:30:21.912 -> [LOG] Gas Sensor: 43.89
+09:30:21.912 -> [LOG] AQI measurement: 1.00
+09:30:21.976 -> [LOG] RSSI: -62 dBm
+09:30:21.976 -> [LOG] Sample Frequency: 5000
+09:30:21.991 -> Sending data to the MQTT
+09:30:22.017 -> [LOG] Data published to MQTT server
+09:30:22.054 -> [LOG] Packets sent with MQTT to each channel: 1
+09:30:27.002 -> [LOG] Gas average: 42
+09:30:27.035 -> [LOG] Temperature: 26.70
+09:30:27.068 -> [LOG] Humidity: 63.00
+09:30:27.068 -> [LOG] Gas Sensor: 42.72
+09:30:27.102 -> [LOG] AQI measurement: 1.00
+09:30:27.135 -> [LOG] RSSI: -68 dBm
+09:30:27.168 -> [LOG] Sample Frequency: 5000
+09:30:27.201 -> Sending data to the MQTT
+09:30:27.201 -> [LOG] Data published to MQTT server
+09:30:27.268 -> [LOG] Packets sent with MQTT to each channel: 2
+09:30:32.189 -> [LOG] Gas average: 41
+09:30:32.222 -> [LOG] Temperature: 26.80
+09:30:32.255 -> [LOG] Humidity: 63.00
+09:30:32.255 -> [LOG] Gas Sensor: 38.91
+09:30:32.292 -> [LOG] AQI measurement: 1.00
+09:30:32.330 -> [LOG] RSSI: -65 dBm
+09:30:32.364 -> [LOG] Sample Frequency: 5000
+09:30:32.364 -> Sending data to the MQTT
+09:30:32.398 -> [LOG] Data published to MQTT server
+09:30:32.432 -> [LOG] Packets sent with MQTT to each channel: 3
+09:30:37.377 -> [LOG] Gas average: 42
+09:30:37.413 -> [LOG] Temperature: 26.80
+09:30:37.450 -> [LOG] Humidity: 63.00
+09:30:37.450 -> [LOG] Gas Sensor: 43.79
+09:30:37.483 -> [LOG] AQI measurement: 1.00
+09:30:37.519 -> [LOG] RSSI: -69 dBm
+09:30:37.553 -> [LOG] Sample Frequency: 5000
+09:30:37.586 -> Sending data to the MQTT
+09:30:37.586 -> [LOG] Data published to MQTT server
+09:30:37.620 -> [LOG] Packets sent with MQTT to each channel: 4
+09:30:42.582 -> [LOG] Gas average: 42
+09:30:42.582 -> [LOG] Temperature: 26.80
+09:30:42.615 -> [LOG] Humidity: 63.00
+09:30:42.651 -> [LOG] Gas Sensor: 42.82
+09:30:42.685 -> [LOG] AQI measurement: 1.00
+09:30:42.718 -> [LOG] RSSI: -61 dBm
+09:30:42.718 -> [LOG] Sample Frequency: 5000
+09:30:42.752 -> Sending data to the MQTT
+09:30:42.786 -> [LOG] Data published to MQTT server
+09:30:42.819 -> [LOG] Packets sent with MQTT to each channel: 5
+09:30:47.761 -> [LOG] Gas average: 41
+09:30:47.798 -> [LOG] Temperature: 26.80
+09:30:47.798 -> [LOG] Humidity: 63.00
+09:30:47.832 -> [LOG] Gas Sensor: 40.18
+09:30:47.865 -> [LOG] AQI measurement: 1.00
+09:30:47.900 -> [LOG] RSSI: -68 dBm
+09:30:47.900 -> [LOG] Sample Frequency: 5000
+09:30:47.933 -> Sending data to the MQTT
+09:30:47.967 -> [LOG] Data published to MQTT server
+09:30:48.001 -> [LOG] Packets sent with MQTT to each channel: 6
+09:30:52.965 -> [LOG] Gas average: 41
+09:30:52.965 -> [LOG] Temperature: 26.80
+09:30:52.999 -> [LOG] Humidity: 63.00
+09:30:53.032 -> [LOG] Gas Sensor: 40.76
+09:30:53.066 -> [LOG] AQI measurement: 1.00
+09:30:53.101 -> [LOG] RSSI: -67 dBm
+09:30:53.101 -> [LOG] Sample Frequency: 5000
+09:30:53.135 -> Sending data to the MQTT
+09:30:53.168 -> [LOG] Data published to MQTT server
+09:30:53.202 -> [LOG] Packets sent with MQTT to each channel: 7
+09:30:58.139 -> [LOG] Gas average: 41
+09:30:58.173 -> [LOG] Temperature: 26.80
+09:30:58.208 -> [LOG] Humidity: 63.00
+09:30:58.208 -> [LOG] Gas Sensor: 38.42
+09:30:58.241 -> [LOG] AQI measurement: 1.00
+09:30:58.275 -> [LOG] RSSI: -67 dBm
+09:30:58.308 -> [LOG] Sample Frequency: 5000
+09:30:58.342 -> Sending data to the MQTT
+09:30:58.342 -> [LOG] Data published to MQTT server
+09:30:58.409 -> [LOG] Packets sent with MQTT to each channel: 8
+09:31:03.331 -> [LOG] Gas average: 40
+09:31:03.366 -> [LOG] Temperature: 26.80
+09:31:03.366 -> [LOG] Humidity: 63.00
+09:31:03.399 -> [LOG] Gas Sensor: 42.42
+09:31:03.433 -> [LOG] AQI measurement: 1.00
+09:31:03.466 -> [LOG] RSSI: -68 dBm
+09:31:03.499 -> [LOG] Sample Frequency: 5000
+09:31:03.499 -> Sending data to the MQTT
+09:31:03.533 -> [LOG] Data published to MQTT server
+09:31:03.566 -> [LOG] Packets sent with MQTT to each channel: 9
+09:31:08.511 -> [LOG] Gas average: 40
+09:31:08.548 -> [LOG] Temperature: 26.80
+09:31:08.582 -> [LOG] Humidity: 63.00
+09:31:08.582 -> [LOG] Gas Sensor: 42.23
+09:31:08.618 -> [LOG] AQI measurement: 1.00
+09:31:08.651 -> [LOG] RSSI: -61 dBm
+09:31:08.685 -> [LOG] Sample Frequency: 5000
+09:31:08.718 -> Sending data to the MQTT
+09:31:08.718 -> [LOG] Data published to MQTT server
+09:31:08.755 -> [LOG] Packets sent with MQTT to each channel: 10

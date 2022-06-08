@@ -1,5 +1,12 @@
 import mqtt
 import httpclient
-#Kjør mqtt fil
+import prophet
+
+#Run mqtt file
 mqtt
+
+#Run http file
 httpclient
+
+#Run prophet and compute MSE
+prophet
