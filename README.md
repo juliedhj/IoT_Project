@@ -4,3 +4,5 @@ This project consists of an ESP-32 board who collects temperature and humidity v
 
 * InfluxDB is running from Docker. 
 * Grafana dashboard is installed locally. 
+
+<img width="1379" alt="Skjermbilde 2022-06-08 kl  12 49 17" src="https://user-images.githubusercontent.com/71122987/172598701-31ba40fb-d22d-4b2e-a1f5-fc1522396874.png">
