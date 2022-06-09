@@ -22,13 +22,15 @@ org = os.getenv('INFLUX_ORG')
 client = getClient()
 query_api = client.query_api()
 write_api = client.write_api(write_options=SYNCHRONOUS)
-forecast_bucket = "sensor_forecast"
+#forecast_bucket = "sensor_forecast"
+forecast_bucket = "forecast"
 
 def query_data_process(measurement, bucket):
    query = f'from(bucket:"{bucket}")' \
         ' |> range(start:-24h, stop: 0h)'\
         ' |> filter(fn: (r) => r._measurement == "measures")' \
         f' |> filter(fn: (r) => r._field == "{measurement}")'\
+           ' |> filter(fn: (r) => r["_value"] != 0)' \
         ' |> aggregateWindow (every: 1m, fn: mean, createEmpty: false)'
 
    result = client.query_api().query(org=org, query=query)
@@ -52,7 +54,7 @@ def prophet_forecast(dataframe):
    m = Prophet()
    m.fit(dataframe)
 
-   future = m.make_future_dataframe(periods=48, freq = "5S")
+   future = m.make_future_dataframe(periods=24, freq = "5min")
    forecast = m.predict(future)
    forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail()
 
