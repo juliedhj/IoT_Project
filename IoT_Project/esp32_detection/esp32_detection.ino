@@ -21,13 +21,19 @@ list<float> gasValues(true);
 int Gas_analog = 35;  
 long gasAverage;
 float AQI;
-int useMQTT = 0;
+int useMQTT = 1;
 boolean resultMQTT;
 float latitude = 44.494716552360245;
 float longitude = 11.349454942271755;
 int mqttPackets;
 int httpPacketsSent;
 int httpPacketsReceived;
+unsigned long timesentHttp; 
+unsigned long timereceivedHttp;
+unsigned long timesentMqtt; 
+unsigned long timereceivedMqtt;
+list<long> delayHttp;
+list<long> delayMqtt;
 
 //Network related variables
 char* SSID = "FASTWEB-7847FA";
@@ -53,7 +59,7 @@ const char* TOPIC_6 = "hjsensor/incoming/samplefreq";
 const char* TOPIC_7 = "hjsensor/incoming/min_gas";
 const char* TOPIC_8 = "hjsensor/incoming/max_gas";
 
-
+//Functions for MQTT handling
 void callback_MQTT(char* topic, byte* payload, unsigned int length){
   String payloadMessage;
   Serial.print("Message received in callback, to topic ");
@@ -94,74 +100,6 @@ void callback_MQTT(char* topic, byte* payload, unsigned int length){
   Serial.println();
 }
 
-void post_HTTP(float temperature, float humidity, float gas, float aqi, int wifi, String id, String gps){
-  
-    String path; 
-    path += String(serverName);
-    
-    clientHTTP.begin(path.c_str());
-    clientHTTP.addHeader("Content-type", "application/json");
-
-    String httpPayload; 
-    httpPayload += "{\"temperature\":" + String(temperature) + ",";
-    httpPayload += "\"humidity\":" + String(humidity) + ",";
-    httpPayload += "\"gas\":" + String(gas) + ",";
-    httpPayload += "\"aqi\":" + String(aqi) + ",";
-    httpPayload += "\"wifi\":" + String(wifi) + ",";
-    httpPayload += "\"id\":" + String(id) + ",";
-    httpPayload += "\"gps\":" + String(gps);
-    httpPayload += "}";
-    httpPayload = String(httpPayload);
-
-    String parsedPayload = httpPayload.c_str();
-    Serial.println("Sending HTTP packets");
-    int responsecode = clientHTTP.POST(parsedPayload); 
-    httpPacketsSent++;
-    Serial.print("[LOG]: HTTP packets sent: ");
-    Serial.println(httpPacketsSent);
-
-
-    if (responsecode != 200) {
-      Serial.print("[HTTP] Error: ");
-      Serial.println(responsecode);
-    } else {
-      httpPacketsReceived++;
-      Serial.print("[LOG] Packets received with HTTP: ");
-      Serial.println(httpPacketsReceived);
-    }
-    clientHTTP.end();
-  }
-
-
-void setup()
-{
-  Serial.begin(9600);
-  dht.setup(27, DHTesp::DHT11);
-  Serial.println();
-  delay(1000);
-  connect();
-  snprintf(id, 23, "ESP32-%llX", ESP.getEfuseMac());
-  Serial.println(id);
-  clientMQTT.setClient(clientWiFi);
-  clientMQTT.setServer(IP_MQTT_SERVER, 1883);
-  clientMQTT.setBufferSize(400);
-  clientMQTT.setCallback(callback_MQTT);
-  subscribe_MQTT();
-  resultMQTT=false;
-}
-
-void connect() {
-  WiFi.begin(SSID, PASS);
-  while (WiFi.status() != WL_CONNECTED) {
-    Serial.println("Connection attempt");
-    delay(1000);
-  }
-  Serial.println("WiFi connected");
-  // Start the server
-  delay(8000);
-  Serial.println(WiFi.localIP());
-}
-
 const char *create_topic(String sensor, char * id, String gps) {
   String topic;
   topic += "hjsensor/" + String(id) + "/" +
@@ -200,6 +138,52 @@ void subscribe_MQTT(){
   }
 }
 
+//Functions for HTTP handling
+void post_HTTP(float temperature, float humidity, float gas, float aqi, int wifi, String id, String gps){
+  
+    String path; 
+    path += String(serverName);
+    
+    clientHTTP.begin(path.c_str());
+    clientHTTP.addHeader("Content-type", "application/json");
+
+    String httpPayload; 
+    httpPayload += "{\"temperature\":" + String(temperature) + ",";
+    httpPayload += "\"humidity\":" + String(humidity) + ",";
+    httpPayload += "\"gas\":" + String(gas) + ",";
+    httpPayload += "\"aqi\":" + String(aqi) + ",";
+    httpPayload += "\"wifi\":" + String(wifi) + ",";
+    httpPayload += "\"id\":" + String(id) + ",";
+    httpPayload += "\"gps\":" + String(gps);
+    httpPayload += "}";
+    httpPayload = String(httpPayload);
+
+    String parsedPayload = httpPayload.c_str();
+    Serial.println("Sending HTTP packets");
+    timesentHttp = millis();
+    int responsecode = clientHTTP.POST(parsedPayload); 
+    httpPacketsSent++;
+    Serial.print("[LOG]: HTTP packets sent: ");
+    Serial.println(httpPacketsSent);
+
+
+    if (responsecode != 200) {
+      Serial.print("[HTTP] Error: ");
+      Serial.println(responsecode);
+    } else {
+      httpPacketsReceived++;
+      timereceivedHttp = millis();
+      Serial.print("[LOG] Packets received with HTTP: ");
+      Serial.println(httpPacketsReceived);
+      Serial.print("[LOG] Delay for HTTP: ");
+      int delayed = timereceivedHttp - timesentHttp; 
+      Serial.println(delayed);
+      delayHttp.push_back(delayed);
+    }
+    clientHTTP.end();
+  }
+
+//Compute the AQI value
 float computeAQI(float gas) {
    gasValues.push_back(gas); 
 
@@ -222,6 +206,48 @@ float computeAQI(float gas) {
   return AQI;
 }
 
+//Compute the average delay for HTTP or MQTT
+void averageDelay(list<long> delays){
+  if (delays.size() > 15) {
+    delays.pop_front();
+  }
+  long delayAverage = accumulate(delays.begin(), delays.end(), 0.0) / delays.size();
+  Serial.print("[LOG] Average delay: ");
+  Serial.println(delayAverage);
+}
+  
+//Set up the clients
+void setup()
+{
+  Serial.begin(9600);
+  dht.setup(27, DHTesp::DHT11);
+  Serial.println();
+  delay(1000);
+  connect();
+  snprintf(id, 23, "ESP32-%llX", ESP.getEfuseMac());
+  Serial.println(id);
+  clientMQTT.setClient(clientWiFi);
+  clientMQTT.setServer(IP_MQTT_SERVER, 1883);
+  clientMQTT.setBufferSize(400);
+  clientMQTT.setCallback(callback_MQTT);
+  subscribe_MQTT();
+  resultMQTT=false;
+}
+
+//Set up the internet connection
+void connect() {
+  WiFi.begin(SSID, PASS);
+  while (WiFi.status() != WL_CONNECTED) {
+    Serial.println("Connection attempt");
+    delay(1000);
+  }
+  Serial.println("WiFi connected");
+  // Start the server
+  delay(8000);
+  Serial.println(WiFi.localIP());
+}
+
+//Main logic of the Arduino, the loop to collect sensor values and send them
 void loop(){
   if(!clientMQTT.connected()){
     clientMQTT.connect("MYesp32",MQTT_USER,MQTT_PASSWD);
@@ -255,6 +281,7 @@ void loop(){
 
   if (useMQTT) {
     Serial.println("Sending data to the MQTT");
+    timesentMqtt = millis();
     resultMQTT=publishData(0, temperature, id, gps);
     resultMQTT=publishData(1, humidity, id, gps);
     resultMQTT=publishData(2, gas, id, gps);
@@ -263,14 +290,23 @@ void loop(){
     
 
     if (resultMQTT) {
+      timereceivedMqtt = millis();
       Serial.println("[LOG] Data published to MQTT server");
       mqttPackets++;
       Serial.print("[LOG] Packets sent with MQTT to each channel: ");
-      Serial.println(mqttPackets);}
+      Serial.println(mqttPackets);
+      Serial.print("[LOG] Time delay for MQTT: ");
+      int delayed = timereceivedMqtt - timesentMqtt;
+      Serial.println(delayed);
+      delayMqtt.push_back(delayed);
+    }
     else 
       Serial.println("[ERROR] MQTT connection failed");
-  } else {
+    averageDelay(delayMqtt);
+  } 
+  else {
     post_HTTP(temperature, humidity, gas, AQI, wifiSignal, chip_id, gps_http); 
+    averageDelay(delayHttp);
   }
    delay(SAMPLE_FREQUENCY);
 }
