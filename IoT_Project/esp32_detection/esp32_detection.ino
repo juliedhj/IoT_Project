@@ -36,8 +36,8 @@ list<long> delayHttp;
 list<long> delayMqtt;
 
 //Network related variables
-char* SSID = "FASTWEB-7847FA";
-char* PASS = "9H7GPMPFZ2";
+char* SSID = "<SSID>";
+char* PASS = "<PASS>";
 const IPAddress ipadd(192,168,0,132);
 char id[23];
 const char* MQTT_USER = "iot2020";
